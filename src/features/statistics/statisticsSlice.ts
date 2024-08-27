@@ -16,7 +16,7 @@ interface StatisticsState {
   songsByArtist: { artist: string; totalSongs: number; totalAlbums: number }[];
   songsByAlbum: { album: string; count: number }[];
   loading: boolean;
-  error: string | null;
+  error: string | null | undefined;
 }
 
 const initialState: StatisticsState = {
@@ -85,6 +85,7 @@ const statisticsSlice = createSlice({
       .addCase(fetchStatistics.rejected, (state, action) => {
         console.error("Failed to fetch statistics:", action.error.message);
         state.loading = false;
+        // @ts-ignore
         state.error = action.error.message || "An error occurred";
       });
   },

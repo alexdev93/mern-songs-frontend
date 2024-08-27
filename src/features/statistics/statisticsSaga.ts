@@ -41,12 +41,10 @@ function* fetchStatisticsSaga(): Generator<any, void, any> {
     );
   } catch (error) {
     const errorMessage = (error as Error).message || "Unknown error";
-    yield put(
-      fetchStatistics.rejected({ error: errorMessage }, "uniqueRequestId")
-    );
+    yield put(fetchStatistics.rejected(null, errorMessage));
   }
 }
 
-export function* statisticsSaga() {
+export default function* statisticsSaga() {
   yield takeEvery(fetchStatistics.pending.type, fetchStatisticsSaga);
 }
