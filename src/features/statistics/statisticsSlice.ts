@@ -6,24 +6,10 @@ import {
   fetchAlbums,
   // fetchSongsInAlbum,
 } from "./statisticsAPI";
-
-interface StatisticsState {
-  totalSongs: number;
-  totalArtists: number;
-  totalAlbums: number;
-  totalGenres: number;
-  songsByGenre: { genre: string; count: number }[];
-  songsByArtist: { artist: string; totalSongs: number; totalAlbums: number }[];
-  songsByAlbum: { album: string; count: number }[];
-  loading: boolean;
-  error: string | null | undefined;
-}
+import { StatisticsState } from "./types";
 
 const initialState: StatisticsState = {
-  totalSongs: 0,
-  totalArtists: 0,
-  totalAlbums: 0,
-  totalGenres: 0,
+  songStats: { totalSongs: 0, totalArtists: 0, totalAlbums: 0, totalGenres: 0},
   songsByGenre: [],
   songsByArtist: [],
   songsByAlbum: [],
@@ -49,14 +35,11 @@ export const fetchStatistics = createAsyncThunk(
     ]);
 
     return {
-      totalSongs: totalResponse.data,
-      totalArtists: totalResponse.data,
-      totalAlbums: totalResponse.data,
-      totalGenres: totalResponse.data,
-      songsByGenre: genresResponse.data,
-      songsByArtist: artistsResponse.data,
-      songsByAlbum: albumsResponse.data,
-      // songsInAlbum: songsInAlbumResponse.data,
+      songStats: totalResponse,
+      songsByGenre: genresResponse,
+      songsByArtist: artistsResponse,
+      songsByAlbum: albumsResponse,
+      // songsInAlbum: songsInAlbumResponse,
     };
   }
 );
@@ -73,20 +56,15 @@ const statisticsSlice = createSlice({
       })
       .addCase(fetchStatistics.fulfilled, (state, action) => {
         console.log("Fetched Statistics:", action.payload);
-        state.totalSongs = action.payload.totalSongs;
-        state.totalArtists = action.payload.totalArtists;
-        state.totalAlbums = action.payload.totalAlbums;
-        state.totalGenres = action.payload.totalGenres;
-        state.songsByGenre = action.payload.songsByGenre;
-        state.songsByArtist = action.payload.songsByArtist;
-        state.songsByAlbum = action.payload.songsByAlbum;
-        state.loading = false;
+        Object.assign(state, {
+          ...action.payload,
+          loading: false,
+        });
       })
       .addCase(fetchStatistics.rejected, (state, action) => {
-        console.error("Failed to fetch statistics:", action.error.message);
+        console.error("Failed to fetch statistics:", action.error?.message);
         state.loading = false;
-        // @ts-ignore
-        state.error = action.error.message || "An error occurred";
+        state.error = action.error?.message || "An error occurred";
       });
   },
 });

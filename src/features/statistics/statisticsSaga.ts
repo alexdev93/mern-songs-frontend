@@ -27,10 +27,7 @@ function* fetchStatisticsSaga(): Generator<any, void, any> {
     yield put(
       fetchStatistics.fulfilled(
         {
-          totalSongs: totalResponse.data.totalSongs,
-          totalArtists: totalResponse.data.totalArtists,
-          totalAlbums: totalResponse.data.totalAlbums,
-          totalGenres: totalResponse.data.totalGenres,
+          songStats: totalResponse,
           songsByGenre: genresResponse.data,
           songsByArtist: artistsResponse.data,
           songsByAlbum: albumsResponse.data,

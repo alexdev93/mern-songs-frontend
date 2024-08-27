@@ -9,7 +9,7 @@ const App: React.FC = () => {
     <Provider store={store}>
       <div>
         <h1>Song List</h1>
-        {/* <SongList /> */}
+        <SongList />
         <Statistics />
       </div>
     </Provider>

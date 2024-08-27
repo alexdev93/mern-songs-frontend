@@ -2,21 +2,14 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
 import { fetchSongsStart } from "../features/songs/songsSlice";
-import styled from "@emotion/styled";
-
-const SongListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-`;
-
-const SongItem = styled.div`
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-`;
+import {
+  Container,
+  Card,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 
 const SongList: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,22 +21,22 @@ const SongList: React.FC = () => {
     dispatch(fetchSongsStart());
   }, [dispatch]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <CircularProgress />;
+  if (error) return <Alert severity="error">Error: {error}</Alert>;
 
   return (
-    <SongListContainer>
+    <Container>
       {songs.map((song, index) => (
-        <SongItem key={index}>
-          {" "}
-          {/* Use unique key here */}
-          <h3>{song.title}</h3>
-          <p>Artist: {song.artist}</p>
-          <p>Album: {song.album}</p>
-          <p>Genre: {song.genre}</p>
-        </SongItem>
+        <Card key={index} sx={{ marginBottom: 2 }}>
+          <CardContent>
+            <Typography variant="h6">{song.title}</Typography>
+            <Typography variant="body1">Artist: {song.artist}</Typography>
+            <Typography variant="body1">Album: {song.album}</Typography>
+            <Typography variant="body1">Genre: {song.genre}</Typography>
+          </CardContent>
+        </Card>
       ))}
-    </SongListContainer>
+    </Container>
   );
 };
 

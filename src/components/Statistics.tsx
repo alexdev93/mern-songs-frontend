@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { debounce } from "lodash";
 import { fetchStatistics } from "../features/statistics/statisticsSlice";
-import { RootState, AppDispatch } from "../store/store";
+import { RootState } from "../store/store";
 import {
   Container,
   Typography,
@@ -14,24 +15,24 @@ import {
 } from "@mui/material";
 
 const Statistics: React.FC = () => {
- const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
 
   // Access the statistics state from the Redux store
-  const {
-    totalSongs,
-    totalArtists,
-    totalAlbums,
-    totalGenres,
-    songsByGenre,
-    loading,
-    error,
-  } = useSelector((state: RootState) => state.statistics);
+  const { songStats, songsByGenre, songsByAlbum, songsByArtist, loading } =
+    useSelector((state: RootState) => state.statistics);
 
-  // Dispatch the fetchStatistics action when the component mounts
+  const debouncedDispatch = useCallback(
+    debounce(() => dispatch(fetchStatistics() as any), 300),
+    [dispatch]
+  );
+
+  const handleFetchStatistics = useCallback(() => {
+    debouncedDispatch();
+  }, [debouncedDispatch]);
+
   useEffect(() => {
-    console.log(totalSongs)
-    dispatch(fetchStatistics() as any);  
-  }, [dispatch]);
+    handleFetchStatistics();
+  }, [handleFetchStatistics]);
 
   if (loading) {
     return (
@@ -48,36 +49,62 @@ const Statistics: React.FC = () => {
     );
   }
 
-  if (error) {
-    return (
-      <Container>
-        <Typography variant="h6" color="error">
-          {error}
-        </Typography>
-      </Container>
-    );
-  }
-
   return (
     <Container>
       <Paper elevation={3} sx={{ padding: 2 }}>
         <Typography variant="h4" gutterBottom>
           Statistics
         </Typography>
-        <Typography variant="h6">Total Songs: {totalSongs}</Typography>
-        <Typography variant="h6">Total Artists: {totalArtists}</Typography>
-        <Typography variant="h6">Total Albums: {totalAlbums}</Typography>
-        <Typography variant="h6">Total Genres: {totalGenres}</Typography>
+        <Typography variant="h6">
+          Total Songs: {songStats?.totalSongs}
+        </Typography>
+        <Typography variant="h6">
+          Total Artists: {songStats?.totalArtists}
+        </Typography>
+        <Typography variant="h6">
+          Total Albums: {songStats?.totalAlbums}
+        </Typography>
+        <Typography variant="h6">
+          Total Genres: {songStats?.totalGenres}
+        </Typography>
 
         <Typography variant="h5" gutterBottom sx={{ marginTop: 2 }}>
           Songs by Genre
         </Typography>
         <List>
-          {songsByGenre.map((genreStat) => (
-            <ListItem key={genreStat.genre}>
+          {songsByGenre?.map((genreStat, index) => (
+            <ListItem key={index}>
               <ListItemText
                 primary={genreStat.genre}
                 secondary={`Count: ${genreStat.count}`}
+              />
+            </ListItem>
+          ))}
+        </List>
+
+        <Typography variant="h5" gutterBottom sx={{ marginTop: 2 }}>
+          Songs by Album
+        </Typography>
+        <List>
+          {songsByAlbum?.map((albumStat, index) => (
+            <ListItem key={index}>
+              <ListItemText
+                primary={albumStat.album}
+                secondary={`Count: ${albumStat.count}`}
+              />
+            </ListItem>
+          ))}
+        </List>
+
+        <Typography variant="h5" gutterBottom sx={{ marginTop: 2 }}>
+          Songs by Artist
+        </Typography>
+        <List>
+          {songsByArtist?.map((artistStat, index) => (
+            <ListItem key={index}>
+              <ListItemText
+                primary={artistStat.artist}
+                secondary={`Count: ${artistStat.totalAlbums}`}
               />
             </ListItem>
           ))}
