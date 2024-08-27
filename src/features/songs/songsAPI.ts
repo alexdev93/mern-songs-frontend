@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Song } from './types';
 
-const API_URL = "http://localhost:8080/api/songs"; // Update with your backend URL
+const API_URL = "https://song-manager-api.onrender.com/songs";
 
 export interface ApiResponse {
   data: Song[];
@@ -9,7 +9,7 @@ export interface ApiResponse {
 
 export const fetchSongs = async (): Promise<Song[]> => {
   const response = await axios.get<ApiResponse>(API_URL);
-  return response.data.data; // Access the nested data property
+  return response.data.data;
 };
 
 export const createSong = async (song: Omit<Song, "id">): Promise<Song> => {
