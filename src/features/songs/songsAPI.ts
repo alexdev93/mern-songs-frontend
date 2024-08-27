@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Song } from './types';
 
-const API_URL = "https://song-manager-api.onrender.com/songs";
+const API_URL = "https://song-manager-api.onrender.com/api/songs";
 
 export interface ApiResponse {
   data: Song[];
