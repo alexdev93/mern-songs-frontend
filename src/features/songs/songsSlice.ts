@@ -29,20 +29,20 @@ const songsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    createSongStart(state) {
-      state.loading = true;
+    createSongStart(state, action: PayloadAction<Song>) {
+      // state.loading = true;
       state.error = null;
     },
     createSongSuccess(state, action: PayloadAction<Song>) {
       state.songs.push(action.payload);
-      state.loading = false;
+      // state.loading = false;
     },
     createSongFailure(state, action: PayloadAction<string>) {
-      state.loading = false;
+      // state.loading = false;
       state.error = action.payload;
     },
-    updateSongStart(state) {
-      state.loading = true;
+    updateSongStart(state, action: PayloadAction<Song>) {
+      // state.loading = true;
       state.error = null;
     },
     updateSongSuccess(state, action: PayloadAction<Song>) {
@@ -52,22 +52,22 @@ const songsSlice = createSlice({
       if (index !== -1) {
         state.songs[index] = action.payload;
       }
-      state.loading = false;
+      // state.loading = false;
     },
     updateSongFailure(state, action: PayloadAction<string>) {
-      state.loading = false;
+      // state.loading = false;
       state.error = action.payload;
     },
-    deleteSongStart(state) {
-      state.loading = true;
+    deleteSongStart(state, action: PayloadAction<string>) {
+      // state.loading = true;
       state.error = null;
     },
     deleteSongSuccess(state, action: PayloadAction<string>) {
       state.songs = state.songs.filter((song) => song.id !== action.payload);
-      state.loading = false;
+      // state.loading = false;
     },
     deleteSongFailure(state, action: PayloadAction<string>) {
-      state.loading = false;
+      // state.loading = false;
       state.error = action.payload;
     },
   },

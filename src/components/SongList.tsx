@@ -1,15 +1,33 @@
-import React, { useEffect } from "react";
+/** @jsxImportSource @emotion/react */
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store/store";
-import { fetchSongsStart } from "../features/songs/songsSlice";
 import {
   Container,
-  Card,
-  CardContent,
-  Typography,
   CircularProgress,
   Alert,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Button,
 } from "@mui/material";
+import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
+import { Edit, Delete, Add } from "@mui/icons-material";
+import {
+  fetchSongsStart,
+  createSongStart,
+  updateSongStart,
+  deleteSongStart,
+} from "../features/songs/songsSlice";
+import { RootState } from "../store/store";
+import { Song } from "../features/songs/types";
+import {
+  actionsContainerStyle,
+  StyledIconButton,
+  StyledTooltip,
+  dataGridStyle,
+} from "../styles";
 
 const SongList: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,25 +35,169 @@ const SongList: React.FC = () => {
     (state: RootState) => state.songs
   );
 
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const [open, setOpen] = useState(false);
+  const [formValues, setFormValues] = useState({
+    title: "",
+    artist: "",
+    album: "",
+    genre: "",
+  });
+
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    pageSize: 5,
+    page: 0,
+  });
+
   useEffect(() => {
     dispatch(fetchSongsStart());
   }, [dispatch]);
+
+  const handleEdit = (song: Song) => {
+    setSelectedSong(song);
+    setFormValues({
+      title: song.title,
+      artist: song.artist,
+      album: song.album,
+      genre: song.genre,
+    });
+    setOpen(true);
+  };
+
+  const handleAdd = () => {
+    setSelectedSong(null);
+    setFormValues({ title: "", artist: "", album: "", genre: "" });
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setFormValues({ title: "", artist: "", album: "", genre: "" });
+  };
+
+  const handleSubmit = () => {
+    if (selectedSong) {
+      dispatch(updateSongStart({ ...selectedSong, ...formValues }));
+    } else {
+      dispatch(createSongStart({ ...formValues }));
+    }
+    handleClose();
+
+    // Revalidate the list after create/update
+    dispatch(fetchSongsStart());
+  };
+
+  const handleDelete = (songId: string) => {
+    if (window.confirm("Are you sure you want to delete this song?")) {
+      dispatch(deleteSongStart(songId));
+    }
+  };
+
+  const columns: GridColDef[] = [
+    { field: "title", headerName: "Title", flex: 1 },
+    { field: "artist", headerName: "Artist", flex: 1 },
+    { field: "album", headerName: "Album", flex: 1 },
+    { field: "genre", headerName: "Genre", flex: 1 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params) => (
+        <div css={actionsContainerStyle}>
+          <StyledTooltip title="Edit">
+            <StyledIconButton
+              color="primary"
+              onClick={() => handleEdit(params.row)}
+            >
+              <Edit />
+            </StyledIconButton>
+          </StyledTooltip>
+          <StyledTooltip title="Delete">
+            <StyledIconButton
+              color="error"
+              onClick={() => handleDelete(params.row.id as string)}
+            >
+              <Delete />
+            </StyledIconButton>
+          </StyledTooltip>
+        </div>
+      ),
+    },
+  ];
 
   if (loading) return <CircularProgress />;
   if (error) return <Alert severity="error">Error: {error}</Alert>;
 
   return (
     <Container>
-      {songs.map((song, index) => (
-        <Card key={index} sx={{ marginBottom: 2 }}>
-          <CardContent>
-            <Typography variant="h6">{song.title}</Typography>
-            <Typography variant="body1">Artist: {song.artist}</Typography>
-            <Typography variant="body1">Album: {song.album}</Typography>
-            <Typography variant="body1">Genre: {song.genre}</Typography>
-          </CardContent>
-        </Card>
-      ))}
+      <StyledTooltip title="Add Song">
+        <StyledIconButton
+          color="primary"
+          onClick={handleAdd}
+          aria-hidden={false}
+        >
+          <Add />
+        </StyledIconButton>
+      </StyledTooltip>
+      <div css={dataGridStyle}>
+        <DataGrid
+          rows={songs}
+          columns={columns}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          disableRowSelectionOnClick
+          autoHeight
+          getRowId={(row) => row.id} // Use _id as the unique identifier
+        />
+      </div>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{selectedSong ? "Edit Song" : "Add Song"}</DialogTitle>
+        <DialogContent>
+          <TextField
+            margin="dense"
+            label="Title"
+            fullWidth
+            value={formValues.title}
+            onChange={(e) =>
+              setFormValues({ ...formValues, title: e.target.value })
+            }
+          />
+          <TextField
+            margin="dense"
+            label="Artist"
+            fullWidth
+            value={formValues.artist}
+            onChange={(e) =>
+              setFormValues({ ...formValues, artist: e.target.value })
+            }
+          />
+          <TextField
+            margin="dense"
+            label="Album"
+            fullWidth
+            value={formValues.album}
+            onChange={(e) =>
+              setFormValues({ ...formValues, album: e.target.value })
+            }
+          />
+          <TextField
+            margin="dense"
+            label="Genre"
+            fullWidth
+            value={formValues.genre}
+            onChange={(e) =>
+              setFormValues({ ...formValues, genre: e.target.value })
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>
+            {selectedSong ? "Update" : "Add"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
