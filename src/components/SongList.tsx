@@ -6,13 +6,7 @@ import {
   CircularProgress,
   Alert,
   Dialog,
-  DialogActions,
-  DialogContent,
   DialogTitle,
-  TextField,
-  Button,
-  Select,
-  MenuItem,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
 import { Edit, Delete, Add } from "@mui/icons-material";
@@ -30,7 +24,8 @@ import {
   StyledTooltip,
   dataGridStyle,
 } from "../styles";
-import { GENRES } from "../constants"; // Import the genre constants
+import GenreFilter from "./GenreFilter";
+import SongForm from "./SongForm";
 
 const SongList: React.FC = () => {
   const dispatch = useDispatch();
@@ -40,18 +35,16 @@ const SongList: React.FC = () => {
 
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const [open, setOpen] = useState(false);
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<Song>({
     title: "",
     artist: "",
     album: "",
     genre: "",
   });
-
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     pageSize: 5,
     page: 0,
   });
-
   const [genreFilter, setGenreFilter] = useState<string>("");
 
   useEffect(() => {
@@ -78,7 +71,7 @@ const SongList: React.FC = () => {
   const handleClose = () => {
     setOpen(false);
     setFormValues({ title: "", artist: "", album: "", genre: "" });
-    setGenreFilter(""); // Reset filter
+    setGenreFilter("");
   };
 
   const handleSubmit = () => {
@@ -88,8 +81,6 @@ const SongList: React.FC = () => {
       dispatch(createSongStart({ ...formValues }));
     }
     handleClose();
-
-    // Revalidate the list after create/update
     dispatch(fetchSongsStart());
   };
 
@@ -151,22 +142,7 @@ const SongList: React.FC = () => {
         </StyledIconButton>
       </StyledTooltip>
 
-      {/* Genre Filter Dropdown */}
-      <Select
-        margin="dense"
-        label="Filter by Genre"
-        fullWidth
-        value={genreFilter}
-        onChange={(e) => setGenreFilter(e.target.value)}
-        displayEmpty
-      >
-        <MenuItem value="">All Genres</MenuItem>
-        {GENRES.map((genre) => (
-          <MenuItem key={genre} value={genre}>
-            {genre}
-          </MenuItem>
-        ))}
-      </Select>
+      <GenreFilter genreFilter={genreFilter} setGenreFilter={setGenreFilter} />
 
       <div css={dataGridStyle}>
         <DataGrid
@@ -182,57 +158,12 @@ const SongList: React.FC = () => {
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{selectedSong ? "Edit Song" : "Add Song"}</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Title"
-            fullWidth
-            value={formValues.title}
-            onChange={(e) =>
-              setFormValues({ ...formValues, title: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Artist"
-            fullWidth
-            value={formValues.artist}
-            onChange={(e) =>
-              setFormValues({ ...formValues, artist: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Album"
-            fullWidth
-            value={formValues.album}
-            onChange={(e) =>
-              setFormValues({ ...formValues, album: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Genre"
-            fullWidth
-            value={formValues.genre}
-            onChange={(e) =>
-              setFormValues({ ...formValues, genre: e.target.value })
-            }
-            select // Add select prop for dropdown
-          >
-            {GENRES.map((genre) => (
-              <MenuItem key={genre} value={genre}>
-                {genre}
-              </MenuItem>
-            ))}
-          </TextField>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>
-            {selectedSong ? "Update" : "Add"}
-          </Button>
-        </DialogActions>
+        <SongForm
+          formValues={formValues}
+          setFormValues={setFormValues}
+          handleSubmit={handleSubmit}
+          handleClose={handleClose}
+        />
       </Dialog>
     </Container>
   );
