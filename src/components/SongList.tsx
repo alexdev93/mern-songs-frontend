@@ -11,10 +11,8 @@ import {
   DialogTitle,
   TextField,
   Button,
-  MenuItem,
   Select,
-  InputLabel,
-  FormControl,
+  MenuItem,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
 import { Edit, Delete, Add } from "@mui/icons-material";
@@ -32,6 +30,7 @@ import {
   StyledTooltip,
   dataGridStyle,
 } from "../styles";
+import { GENRES } from "../constants"; // Import the genre constants
 
 const SongList: React.FC = () => {
   const dispatch = useDispatch();
@@ -52,6 +51,8 @@ const SongList: React.FC = () => {
     pageSize: 5,
     page: 0,
   });
+
+  const [genreFilter, setGenreFilter] = useState<string>("");
 
   useEffect(() => {
     dispatch(fetchSongsStart());
@@ -77,6 +78,7 @@ const SongList: React.FC = () => {
   const handleClose = () => {
     setOpen(false);
     setFormValues({ title: "", artist: "", album: "", genre: "" });
+    setGenreFilter(""); // Reset filter
   };
 
   const handleSubmit = () => {
@@ -96,6 +98,11 @@ const SongList: React.FC = () => {
       dispatch(deleteSongStart(songId));
     }
   };
+
+  // Filter songs by genre
+  const filteredSongs = genreFilter
+    ? songs.filter((song) => song.genre === genreFilter)
+    : songs;
 
   const columns: GridColDef[] = [
     { field: "title", headerName: "Title", flex: 1 },
@@ -143,9 +150,27 @@ const SongList: React.FC = () => {
           <Add />
         </StyledIconButton>
       </StyledTooltip>
+
+      {/* Genre Filter Dropdown */}
+      <Select
+        margin="dense"
+        label="Filter by Genre"
+        fullWidth
+        value={genreFilter}
+        onChange={(e) => setGenreFilter(e.target.value)}
+        displayEmpty
+      >
+        <MenuItem value="">All Genres</MenuItem>
+        {GENRES.map((genre) => (
+          <MenuItem key={genre} value={genre}>
+            {genre}
+          </MenuItem>
+        ))}
+      </Select>
+
       <div css={dataGridStyle}>
         <DataGrid
-          rows={songs}
+          rows={filteredSongs}
           columns={columns}
           paginationModel={paginationModel}
           onPaginationModelChange={setPaginationModel}
@@ -185,34 +210,22 @@ const SongList: React.FC = () => {
               setFormValues({ ...formValues, album: e.target.value })
             }
           />
-          <FormControl fullWidth margin="dense">
-            <InputLabel id="genre-label">Genre</InputLabel>
-            <Select
-              margin="dense"
-              label="Genre"
-              fullWidth
-              value={formValues.genre}
-              onChange={(e) =>
-                setFormValues({ ...formValues, genre: e.target.value })
-              }
-            >
-              {[
-                "Pop",
-                "Rock",
-                "Jazz",
-                "Classical",
-                "Hip-Hop",
-                "Country",
-                "Electronic",
-                "Synthwave",
-                "Reggae",
-              ].map((genre) => (
-                <MenuItem key={genre} value={genre}>
-                  {genre}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <TextField
+            margin="dense"
+            label="Genre"
+            fullWidth
+            value={formValues.genre}
+            onChange={(e) =>
+              setFormValues({ ...formValues, genre: e.target.value })
+            }
+            select // Add select prop for dropdown
+          >
+            {GENRES.map((genre) => (
+              <MenuItem key={genre} value={genre}>
+                {genre}
+              </MenuItem>
+            ))}
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
