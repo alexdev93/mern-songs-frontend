@@ -11,6 +11,10 @@ import {
   DialogTitle,
   TextField,
   Button,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
 import { Edit, Delete, Add } from "@mui/icons-material";
@@ -181,15 +185,34 @@ const SongList: React.FC = () => {
               setFormValues({ ...formValues, album: e.target.value })
             }
           />
-          <TextField
-            margin="dense"
-            label="Genre"
-            fullWidth
-            value={formValues.genre}
-            onChange={(e) =>
-              setFormValues({ ...formValues, genre: e.target.value })
-            }
-          />
+          <FormControl fullWidth margin="dense">
+            <InputLabel id="genre-label">Genre</InputLabel>
+            <Select
+              margin="dense"
+              label="Genre"
+              fullWidth
+              value={formValues.genre}
+              onChange={(e) =>
+                setFormValues({ ...formValues, genre: e.target.value })
+              }
+            >
+              {[
+                "Pop",
+                "Rock",
+                "Jazz",
+                "Classical",
+                "Hip-Hop",
+                "Country",
+                "Electronic",
+                "Synthwave",
+                "Reggae",
+              ].map((genre) => (
+                <MenuItem key={genre} value={genre}>
+                  {genre}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
