@@ -44,7 +44,7 @@ const SongList: React.FC = () => {
     genre: "",
   });
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    pageSize: 5,
+    pageSize: 6,
     page: 0,
   });
   const [genreFilter, setGenreFilter] = useState<string>("");
@@ -136,7 +136,7 @@ const SongList: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh", // Adjust height if needed
+          height: "100vh", 
         }}
       >
         <CircularProgress />
