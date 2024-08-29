@@ -39,7 +39,7 @@ const Charts: React.FC = () => {
     return () => {
       debouncedFetchStatistics.cancel();
     };
-  }, [debouncedFetchStatistics]);
+  }, []);
 
   const transformedSongsByArtist = (songsByArtist || []).map((item) => ({
     _id: item._id || "Unknown", 

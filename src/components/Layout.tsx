@@ -1,4 +1,3 @@
-// src/components/Layout.tsx
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
@@ -19,7 +18,7 @@ const Layout: React.FC = () => {
           overflow: "hidden",
         }}
       >
-        <Outlet /> {/* This will render the routed components */}
+        <Outlet />
       </Container>
     </Box>
   );

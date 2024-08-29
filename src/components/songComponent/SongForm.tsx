@@ -6,7 +6,6 @@ import {
   DialogActions,
   MenuItem,
   useTheme,
-  useMediaQuery,
 } from "@mui/material";
 import { GENRES } from "../../constants";
 import { Song } from "../../features/songs/types";
@@ -25,7 +24,6 @@ const SongForm: React.FC<SongFormProps> = ({
   handleClose,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Optional: adjust layout based on screen size
 
   return (
     <React.Fragment>
