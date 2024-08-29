@@ -22,7 +22,7 @@ const StatisticsCard: React.FC<StatisticsProps> = ({
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: "5px",
     transition: "all 0.4s ease-in-out",
-    boxShadow: "1px 2px 15px rgba(0, 0, 0, 0.1)",
+    boxShadow: "1px 2px 15px rgba(0, 0, 0, 1)",
     "&:hover": {
       cursor: "default",
       transform: "translateY(-5px)",
