@@ -1,32 +1,18 @@
+// src/App.tsx
 import React from "react";
+import { Routes, Route } from "react-router-dom";
 import SongList from "./components/SongList";
 import Statistics from "./components/Statistics";
-import { Box, Container } from "@mui/material";
-import Sidebar from "./components/Sidebar";
+import Layout from "./components/Layout";
 
 const App: React.FC = () => {
-
-
   return (
-    <div>
-      <Box sx={{ display: "flex", minHeight: "100vh", overflowX: "hidden" }}>
-        <Sidebar />
-        <Container
-          maxWidth="lg"
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            px: { xs: 2, md: 3 },
-            py: 4,
-            overflowX: "hidden",
-          }}
-        >
-          <SongList />
-          <Statistics />
-        </Container>
-      </Box>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<SongList />} />
+        <Route path="statistics" element={<Statistics />} />
+      </Route>
+    </Routes>
   );
 };
 

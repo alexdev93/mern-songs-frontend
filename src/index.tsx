@@ -8,7 +8,8 @@ import theme from "./theme";
 import reportWebVitals from "./reportWebVitals";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material";
-import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
+import { BrowserRouter } from "react-router-dom";
+import ErrorBoundary from "./ErrorBoundary";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,9 +20,9 @@ root.render(
       <CssBaseline />
       <Provider store={store}>
         <BrowserRouter>
-          {" "}
-          {/* Wrap App with BrowserRouter */}
-          <App />
+          <ErrorBoundary>
+              <App/>
+          </ErrorBoundary>
         </BrowserRouter>
       </Provider>
     </ThemeProvider>

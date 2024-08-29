@@ -1,4 +1,5 @@
-// src/components/GenreChart.tsx
+// src/components/ArtistBarChart.tsx
+
 import React, { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -22,12 +23,26 @@ ChartJS.register(
   LinearScale
 );
 
-interface GenreChartProps {
-  data: { _id: string; count: number }[] | undefined;
+interface ArtistBarChartProps {
+  data: { _id: string; totalAlbums: number }[] | undefined;
 }
 
-const GenreChart: React.FC<GenreChartProps> = ({ data }) => {
+const ArtistBarChart: React.FC<ArtistBarChartProps> = ({ data }) => {
   const theme = useTheme();
+
+  // Define a set of colors for up to 10 different data entries
+  const colors = [
+    "#FF6384",
+    "#36A2EB",
+    "#FFCE56",
+    "#4BC0C0",
+    "#FF9F40",
+    "#C9CBCF",
+    "#E7E9ED",
+    "#F1C40F",
+    "#E74C3C",
+    "#9B59B6",
+  ];
 
   // Prepare chart data
   const chartData = useMemo(() => {
@@ -36,29 +51,34 @@ const GenreChart: React.FC<GenreChartProps> = ({ data }) => {
         labels: [],
         datasets: [
           {
-            label: "Number of Songs",
+            label: "Total Albums",
             data: [],
-            backgroundColor: theme.palette.primary.main,
-            borderColor: theme.palette.primary.dark,
+            backgroundColor: [],
+            borderColor: theme.palette.background.paper,
             borderWidth: 1,
           },
         ],
       };
     }
 
+    // Log data for debugging
+    console.log("Artist Data:", data);
+
     return {
-      labels: data.map((item) => item._id),
+      labels: data.map((item) => item._id), // Use _id as the label
       datasets: [
         {
-          label: "Number of Songs",
-          data: data.map((item) => item.count),
-          backgroundColor: theme.palette.primary.main,
-          borderColor: theme.palette.primary.dark,
+          label: "Total Albums",
+          data: data.map((item) => item.totalAlbums),
+          backgroundColor: data.map(
+            (_, index) => colors[index % colors.length]
+          ),
+          borderColor: theme.palette.background.paper,
           borderWidth: 1,
         },
       ],
     };
-  }, [data, theme.palette.primary.main, theme.palette.primary.dark]);
+  }, [data, theme.palette.background.paper, colors]);
 
   // Prepare chart options
   const options = useMemo(
@@ -71,7 +91,7 @@ const GenreChart: React.FC<GenreChartProps> = ({ data }) => {
         tooltip: {
           callbacks: {
             label: (tooltipItem: any) =>
-              `${tooltipItem.label}: ${tooltipItem.raw} songs`,
+              `${tooltipItem.label}: ${tooltipItem.raw} albums`,
           },
         },
       },
@@ -108,10 +128,10 @@ const GenreChart: React.FC<GenreChartProps> = ({ data }) => {
   }
 
   return (
-    <div>
+    <div style={{ width: "400px", height: "300px" }}>
       <Bar data={chartData as any} options={options} />
     </div>
   );
 };
 
-export default GenreChart;
+export default ArtistBarChart;
