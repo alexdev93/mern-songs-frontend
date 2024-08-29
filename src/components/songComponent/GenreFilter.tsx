@@ -1,7 +1,7 @@
 // src/components/GenreFilter.tsx
 import React from "react";
 import { Select, MenuItem, FormControl } from "@mui/material";
-import { GENRES } from "../constants";
+import { GENRES } from "../../constants";
 
 interface GenreFilterProps {
   genreFilter: string;

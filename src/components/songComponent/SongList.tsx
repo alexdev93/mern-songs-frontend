@@ -17,15 +17,15 @@ import {
   createSongStart,
   updateSongStart,
   deleteSongStart,
-} from "../features/songs/songsSlice";
-import { RootState } from "../store/store";
-import { Song } from "../features/songs/types";
+} from "../../features/songs/songsSlice";
+import { RootState } from "../../store/store";
+import { Song } from "../../features/songs/types";
 import {
   actionsContainerStyle,
   StyledIconButton,
   StyledTooltip,
   dataGridStyle,
-} from "../styles";
+} from "../styles"
 import GenreFilter from "./GenreFilter";
 import SongForm from "./SongForm";
 
@@ -94,7 +94,7 @@ const SongList: React.FC = () => {
 
   // Filter songs by genre
   const filteredSongs = genreFilter
-    ? songs.filter((song) => song.genre === genreFilter)
+    ? songs.filter((song: any) => song.genre === genreFilter)
     : songs;
 
   const columns: GridColDef[] = [

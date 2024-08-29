@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { useTheme } from "@mui/material/styles";
 import { Typography } from "@mui/material";
+import { COLORS } from "../../constants";
 
 ChartJS.register(
   Title,
@@ -23,27 +24,12 @@ ChartJS.register(
 );
 
 interface HorizontalBarChartProps {
-  data?: { _id: string; count: number }[]; // Make data optional
+  data?: { _id: string; count: number }[]; 
 }
 
 const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
   const theme = useTheme();
 
-  // Define a set of colors for up to 10 different data entries
-  const colors = [
-    "#FF6384",
-    "#36A2EB",
-    "#FFCE56",
-    "#4BC0C0",
-    "#FF9F40",
-    "#C9CBCF",
-    "#E7E9ED",
-    "#F1C40F",
-    "#E74C3C",
-    "#9B59B6",
-  ];
-
-  // Prepare chart data
   const chartData = useMemo(() => {
     if (data.length === 0) {
       return {
@@ -67,14 +53,14 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
           label: "Count",
           data: data.map((item) => item.count),
           backgroundColor: data.map(
-            (_, index) => colors[index % colors.length]
+            (_, index) => COLORS[index % COLORS.length]
           ),
           borderColor: theme.palette.background.paper,
           borderWidth: 1,
         },
       ],
     };
-  }, [data, theme.palette.background.paper, colors]);
+  }, [data, theme.palette.background.paper, COLORS]);
 
   // Prepare chart options
   const options = useMemo(
@@ -88,7 +74,7 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
         tooltip: {
           callbacks: {
             label: (tooltipItem: any) =>
-              `${tooltipItem.label}: ${tooltipItem.raw} counts`,
+              `${tooltipItem.label}: ${tooltipItem.raw} songs`,
           },
         },
       },
@@ -114,7 +100,6 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
     [theme.palette.text.primary, theme.palette.text.secondary]
   );
 
-  // Render a message if no data is available
   if (data.length === 0) {
     return (
       <div
@@ -139,7 +124,7 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "16px", // Add padding
+        padding: "16px",
         boxSizing: "border-box",
       }}
     >

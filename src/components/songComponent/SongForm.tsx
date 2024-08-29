@@ -8,8 +8,8 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { GENRES } from "../constants";
-import { Song } from "../features/songs/types";
+import { GENRES } from "../../constants";
+import { Song } from "../../features/songs/types";
 
 interface SongFormProps {
   formValues: Song;

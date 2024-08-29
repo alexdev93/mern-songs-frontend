@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { useTheme } from "@mui/material/styles";
 import { Typography } from "@mui/material";
+import { COLORS } from "../../constants";
 
 ChartJS.register(
   Title,
@@ -30,21 +31,6 @@ interface ArtistBarChartProps {
 const ArtistBarChart: React.FC<ArtistBarChartProps> = ({ data }) => {
   const theme = useTheme();
 
-  // Define a set of colors for up to 10 different data entries
-  const colors = [
-    "#FF6384",
-    "#36A2EB",
-    "#FFCE56",
-    "#4BC0C0",
-    "#FF9F40",
-    "#C9CBCF",
-    "#E7E9ED",
-    "#F1C40F",
-    "#E74C3C",
-    "#9B59B6",
-  ];
-
-  // Prepare chart data
   const chartData = useMemo(() => {
     if (!data || data.length === 0) {
       return {
@@ -71,14 +57,14 @@ const ArtistBarChart: React.FC<ArtistBarChartProps> = ({ data }) => {
           label: "Total Albums",
           data: data.map((item) => item.totalAlbums),
           backgroundColor: data.map(
-            (_, index) => colors[index % colors.length]
+            (_, index) => COLORS[index % COLORS.length]
           ),
           borderColor: theme.palette.background.paper,
           borderWidth: 1,
         },
       ],
     };
-  }, [data, theme.palette.background.paper, colors]);
+  }, [data, theme.palette.background.paper, COLORS]);
 
   // Prepare chart options
   const options = useMemo(

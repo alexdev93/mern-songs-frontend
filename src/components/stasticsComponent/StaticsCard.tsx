@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, Typography, Grid, useTheme } from "@mui/material";
 import { css } from "@emotion/react";
-import Counter from "./Counter";
+import Counter from "../Counter";
 
 interface StatisticsProps {
   totalSongs: number;

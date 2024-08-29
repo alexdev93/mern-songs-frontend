@@ -4,10 +4,8 @@ import songsReducer from "../features/songs/songsSlice";
 import statisticsReducer from "../features/statistics/statisticsSlice";
 import rootSaga from "./rootSaga";
 
-// Create the Redux Saga middleware
 const sagaMiddleware = createSagaMiddleware();
 
-// Configure the Redux store
 export const store = configureStore({
   reducer: {
     songs: songsReducer,
@@ -16,7 +14,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(sagaMiddleware), // Add saga middleware only
+    }).concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);

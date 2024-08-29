@@ -1,8 +1,8 @@
 // src/App.tsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import SongList from "./components/SongList";
-import Statistics from "./components/Statistics";
+import SongList from "./components/songComponent/SongList";
+import Statistics from "./components/stasticsComponent/Statistics";
 import Layout from "./components/Layout";
 
 const App: React.FC = () => {

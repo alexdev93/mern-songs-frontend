@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import { fetchStatistics } from "../features/statistics/statisticsSlice";
+import { RootState } from "../../store/store";
+import { fetchStatistics } from "../../features/statistics/statisticsSlice";
 import { debounce } from "lodash";
 import StatisticsCard from "./StaticsCard";
 import GenrePieChart from "./GenrePieChart";
@@ -24,7 +24,6 @@ const Charts: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  // Debounce fetchStatistics to avoid excessive API calls
   const debouncedFetchStatistics = useCallback(
     debounce(() => {
       dispatch(fetchStatistics() as any).catch((err: Error) => {
@@ -42,9 +41,8 @@ const Charts: React.FC = () => {
     };
   }, [debouncedFetchStatistics]);
 
-  // Transform and validate data
   const transformedSongsByArtist = (songsByArtist || []).map((item) => ({
-    _id: item._id || "Unknown", // Default value if artist is undefined
+    _id: item._id || "Unknown", 
     totalAlbums: item.totalAlbums || 0,
   }));
 
@@ -55,7 +53,7 @@ const Charts: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh", // Full viewport height for center alignment
+          height: "100vh", 
         }}
       >
         <CircularProgress />
@@ -80,7 +78,7 @@ const Charts: React.FC = () => {
         sx={{
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
-          gap: 4, // Increased gap between elements
+          gap: 4, 
           mb: 4,
           justifyContent: "center",
           alignItems: "center",
@@ -90,7 +88,7 @@ const Charts: React.FC = () => {
           sx={{
             flex: 1,
             minHeight: 300,
-            maxWidth: "95%", // Ensure the card doesn't stretch too wide
+            maxWidth: "95%", 
           }}
         >
           <StatisticsCard
@@ -105,7 +103,7 @@ const Charts: React.FC = () => {
         sx={{
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
-          gap: 4, // Increased gap between charts
+          gap: 4,
           width: "100%",
           justifyContent: "center",
         }}
@@ -113,8 +111,8 @@ const Charts: React.FC = () => {
         <Box
           sx={{
             flex: 1,
-            minWidth: "300px", // Ensure the chart has a minimum width
-            maxWidth: "500px", // Cap width for larger screens
+            minWidth: "300px", 
+            maxWidth: "500px", 
           }}
         >
           <ArtistBarChart data={transformedSongsByArtist} />
@@ -138,13 +136,13 @@ const Charts: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          gap: 4, // Increased gap before the AlbumslBarChart
+          gap: 4,
           mt: 4,
         }}
       >
         <Box
           sx={{
-            width: "100%", // Full width for AlbumslBarChart
+            width: "100%",
             minHeight: 300,
           }}
         >
