@@ -7,6 +7,8 @@ import {
   Alert,
   Dialog,
   DialogTitle,
+  Typography,
+  Box,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
 import { Edit, Delete, Add } from "@mui/icons-material";
@@ -127,11 +129,36 @@ const SongList: React.FC = () => {
     },
   ];
 
-  if (loading) return <CircularProgress />;
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh", // Adjust height if needed
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   if (error) return <Alert severity="error">Error: {error}</Alert>;
 
   return (
     <Container>
+      <Typography
+        variant="h4"
+        sx={{
+          textAlign: "center",
+          marginBottom: 4,
+          color: (theme) => theme.palette.text.primary,
+        }}
+      >
+        Song List
+      </Typography>
+
       <StyledTooltip title="Add Song">
         <StyledIconButton
           color="primary"

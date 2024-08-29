@@ -84,20 +84,29 @@ const GenrePieChart: React.FC<GenrePieChartProps> = ({ data }) => {
     [theme.palette.background.paper]
   );
 
-  // Render a message if no data is available
-  if (!data || data.length === 0) {
-    return (
-      <Typography variant="body1" color={theme.palette.text.primary}>
-        No data available
-      </Typography>
-    );
-  }
-
   return (
-    <div style={{ width: "300px", height: "300px" }}>
-      {" "}
-      {/* Set dimensions to make it compact */}
-      <Pie data={chartData as any} options={options} />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center", // Center horizontally
+        justifyContent: "center", // Center vertically
+        textAlign: "center",
+        height: "100%", // Ensure it takes full height of the container
+      }}
+    >
+      <Typography variant="h6" color={theme.palette.text.primary} gutterBottom>
+        Genre Distribution
+      </Typography>
+      {data && data.length > 0 ? (
+        <div style={{ width: "300px", height: "300px" }}>
+          <Pie data={chartData as any} options={options} />
+        </div>
+      ) : (
+        <Typography variant="body1" color={theme.palette.text.primary}>
+          No data available
+        </Typography>
+      )}
     </div>
   );
 };

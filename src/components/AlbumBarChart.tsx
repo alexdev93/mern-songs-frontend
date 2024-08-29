@@ -11,6 +11,7 @@ import {
   LinearScale,
 } from "chart.js";
 import { useTheme } from "@mui/material/styles";
+import { Typography } from "@mui/material";
 
 ChartJS.register(
   Title,
@@ -118,7 +119,7 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
     return (
       <div
         style={{
-          width: "400px",
+          width: "100%",
           height: "300px",
           display: "flex",
           alignItems: "center",
@@ -131,7 +132,27 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
   }
 
   return (
-    <div style={{ width: "400px", height: "300px" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "300px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "16px", // Add padding
+        boxSizing: "border-box",
+      }}
+    >
+      <Typography
+        variant="h6"
+        sx={{
+          marginBottom: "16px",
+          textAlign: "center",
+          color: theme.palette.text.primary,
+        }}
+      >
+        Albums Count by Artist
+      </Typography>
       <Bar data={chartData} options={options} />
     </div>
   );
