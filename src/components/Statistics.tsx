@@ -5,6 +5,7 @@ import { RootState } from "../store/store";
 import { fetchStatistics } from "../features/statistics/statisticsSlice";
 import { debounce } from "lodash";
 import StatisticsCard from "./StaticsCard";
+import GenreChart from "./GenreChart";
 
 const Charts: React.FC = React.memo(() => {
   const dispatch = useDispatch();
@@ -26,15 +27,18 @@ const Charts: React.FC = React.memo(() => {
     return () => {
       debouncedFetchStatistics.cancel();
     };
-  }, [debouncedFetchStatistics, songsByGenre]);
+  }, [debouncedFetchStatistics]);
 
   return (
-    <StatisticsCard
-      totalSongs={songStats.totalSongs}
-      totalGenres={songStats.totalGenres}
-      totalAlbums={songStats.totalAlbums}
-      totalArtists={songStats.totalArtists}
-    />
+    <>
+      <StatisticsCard
+        totalSongs={songStats.totalSongs}
+        totalGenres={songStats.totalGenres}
+        totalAlbums={songStats.totalAlbums}
+        totalArtists={songStats.totalArtists}
+      />
+      <GenreChart data={songsByGenre} />
+    </>
   );
 });
 
