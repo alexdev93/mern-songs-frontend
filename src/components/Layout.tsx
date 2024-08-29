@@ -6,7 +6,7 @@ import { Box, Container } from "@mui/material";
 
 const Layout: React.FC = () => {
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", overflowX: "hidden" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh", overflow: "hidden" }}>
       <Sidebar />
       <Container
         maxWidth="lg"
@@ -16,7 +16,7 @@ const Layout: React.FC = () => {
           flexDirection: "column",
           px: { xs: 2, md: 3 },
           py: 4,
-          overflowX: "hidden",
+          overflow: "hidden",
         }}
       >
         <Outlet /> {/* This will render the routed components */}
