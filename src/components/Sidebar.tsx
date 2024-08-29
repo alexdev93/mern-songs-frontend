@@ -2,6 +2,7 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   CircularProgress,
   Box,
@@ -12,7 +13,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom"; // Updated import
+import { Link } from "react-router-dom"; // Updated import
 
 const mainRoutes = [
   { path: "/", name: "Home" },
@@ -24,7 +25,7 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const { pathname } = useLocation(); // Get current pathname
+  // const { pathname } = useLocation(); 
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -72,23 +73,20 @@ export default function Sidebar() {
         >
           <List>
             {mainRoutes.map(({ path, name }) => (
-              <ListItem
-                key={path}
-                component={Link}
-                to={path} // Use `to` instead of `href`
-                selected={pathname === path} // Use `pathname` from `useLocation`
-                sx={{
-                  color: theme.palette.text.primary,
-                  bgcolor:
-                    pathname === path
-                      ? theme.palette.action.selected
-                      : "inherit",
-                  borderRadius: 1,
-                  mb: 1,
-                  "&:hover": { bgcolor: theme.palette.action.hover },
-                }}
-              >
-                <ListItemText primary={name} />
+              <ListItem key={path} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to={path} // Use `to` instead of `href`
+                  // selected={pathname === path} // Use `pathname` from `useLocation`
+                  sx={{
+                    color: theme.palette.text.primary,
+                    borderRadius: 1,
+                    mb: 1,
+                    "&:hover": { bgcolor: theme.palette.action.hover },
+                  }}
+                >
+                  <ListItemText primary={name} />
+                </ListItemButton>
               </ListItem>
             ))}
           </List>

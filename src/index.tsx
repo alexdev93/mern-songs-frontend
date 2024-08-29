@@ -8,6 +8,7 @@ import theme from "./theme";
 import reportWebVitals from "./reportWebVitals";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material";
+import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,7 +18,11 @@ root.render(
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Provider store={store}>
-        <App />
+        <BrowserRouter>
+          {" "}
+          {/* Wrap App with BrowserRouter */}
+          <App />
+        </BrowserRouter>
       </Provider>
     </ThemeProvider>
   </React.StrictMode>
