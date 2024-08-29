@@ -42,12 +42,12 @@ export const fetchAlbums = async () => {
   }
 };
 
-export const fetchSongsInAlbum = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/songs-in-album`);
-    return response.data.data;
-  } catch (error: any) {
-    console.error("Error fetching songs in album:", error.message || error);
-    throw new Error("Failed to fetch songs in album");
-  }
-};
+// export const fetchSongsInAlbum = async () => {
+//   try {
+//     const response = await axios.get(`${API_URL}/songs-in-album`);
+//     return response.data.data;
+//   } catch (error: any) {
+//     console.error("Error fetching songs in album:", error.message || error);
+//     throw new Error("Failed to fetch songs in album");
+//   }
+// };

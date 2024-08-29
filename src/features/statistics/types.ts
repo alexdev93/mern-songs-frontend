@@ -1,6 +1,6 @@
 export interface StatisticsState {
   songStats: totalSongsInfo;
-  songsByGenre: { genre: string; count: number }[];
+  songsByGenre: { _id: string; count: number }[];
   songsByArtist: { artist: string; totalSongs: number; totalAlbums: number }[];
   songsByAlbum: { album: string; count: number }[];
   loading: boolean;

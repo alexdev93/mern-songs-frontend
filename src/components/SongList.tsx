@@ -152,7 +152,8 @@ const SongList: React.FC = () => {
           onPaginationModelChange={setPaginationModel}
           disableRowSelectionOnClick
           autoHeight
-          getRowId={(row) => row.id} // Use _id as the unique identifier
+          getRowId={(row) => row.id}
+          pageSizeOptions={[5, 10, 20]}
         />
       </div>
 
