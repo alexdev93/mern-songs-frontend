@@ -1,4 +1,5 @@
-import React from "react";
+/** @jsxImportSource @emotion/react */
+import React, { useState } from "react";
 import {
   TextField,
   Button,
@@ -7,6 +8,7 @@ import {
   MenuItem,
   useTheme,
 } from "@mui/material";
+import { css } from "@emotion/react";
 import { GENRES } from "../../constants";
 import { Song } from "../../features/songs/types";
 
@@ -24,10 +26,63 @@ const SongForm: React.FC<SongFormProps> = ({
   handleClose,
 }) => {
   const theme = useTheme();
+  const [errors, setErrors] = useState({
+    title: false,
+    artist: false,
+    album: false,
+    genre: false,
+  });
+
+  const validateForm = () => {
+    const newErrors = {
+      title: !formValues.title,
+      artist: !formValues.artist,
+      album: !formValues.album,
+      genre: !formValues.genre,
+    };
+    setErrors(newErrors);
+    return !Object.values(newErrors).includes(true);
+  };
+
+  const onSubmit = () => {
+    if (validateForm()) {
+      handleSubmit();
+    }
+  };
+
+  const textFieldStyles = (hasError: boolean) =>
+    css({
+      marginBottom: theme.spacing(2),
+      "& .MuiInputLabel-root": {
+        color: hasError
+          ? theme.palette.error.main
+          : theme.palette.text.secondary,
+      },
+      "& .MuiInputBase-input": {
+        color: theme.palette.text.primary,
+      },
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+          borderColor: hasError
+            ? theme.palette.error.main
+            : theme.palette.text.secondary,
+        },
+        "&:hover fieldset": {
+          borderColor: hasError
+            ? theme.palette.error.main
+            : theme.palette.primary.main,
+        },
+        "&.Mui-focused fieldset": {
+          borderColor: hasError
+            ? theme.palette.error.main
+            : theme.palette.primary.main,
+        },
+      },
+    });
 
   return (
     <React.Fragment>
-      <DialogContent sx={{ bgcolor: theme.palette.background.paper }}>
+      <DialogContent css={{ backgroundColor: theme.palette.background.paper }}>
         <TextField
           margin="dense"
           label="Title"
@@ -36,26 +91,9 @@ const SongForm: React.FC<SongFormProps> = ({
           onChange={(e) =>
             setFormValues({ ...formValues, title: e.target.value })
           }
-          sx={{
-            mb: 2,
-            "& .MuiInputLabel-root": {
-              color: theme.palette.text.secondary,
-            },
-            "& .MuiInputBase-input": {
-              color: theme.palette.text.primary,
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: theme.palette.text.secondary,
-              },
-              "&:hover fieldset": {
-                borderColor: theme.palette.primary.main,
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: theme.palette.primary.main,
-              },
-            },
-          }}
+          css={textFieldStyles(errors.title)}
+          error={errors.title}
+          helperText={errors.title && "Title is required"}
         />
         <TextField
           margin="dense"
@@ -65,26 +103,9 @@ const SongForm: React.FC<SongFormProps> = ({
           onChange={(e) =>
             setFormValues({ ...formValues, artist: e.target.value })
           }
-          sx={{
-            mb: 2,
-            "& .MuiInputLabel-root": {
-              color: theme.palette.text.secondary,
-            },
-            "& .MuiInputBase-input": {
-              color: theme.palette.text.primary,
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: theme.palette.text.secondary,
-              },
-              "&:hover fieldset": {
-                borderColor: theme.palette.primary.main,
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: theme.palette.primary.main,
-              },
-            },
-          }}
+          css={textFieldStyles(errors.artist)}
+          error={errors.artist}
+          helperText={errors.artist && "Artist is required"}
         />
         <TextField
           margin="dense"
@@ -94,26 +115,9 @@ const SongForm: React.FC<SongFormProps> = ({
           onChange={(e) =>
             setFormValues({ ...formValues, album: e.target.value })
           }
-          sx={{
-            mb: 2,
-            "& .MuiInputLabel-root": {
-              color: theme.palette.text.secondary,
-            },
-            "& .MuiInputBase-input": {
-              color: theme.palette.text.primary,
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: theme.palette.text.secondary,
-              },
-              "&:hover fieldset": {
-                borderColor: theme.palette.primary.main,
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: theme.palette.primary.main,
-              },
-            },
-          }}
+          css={textFieldStyles(errors.album)}
+          error={errors.album}
+          helperText={errors.album && "Album is required"}
         />
         <TextField
           margin="dense"
@@ -124,26 +128,9 @@ const SongForm: React.FC<SongFormProps> = ({
             setFormValues({ ...formValues, genre: e.target.value })
           }
           select
-          sx={{
-            mb: 2,
-            "& .MuiInputLabel-root": {
-              color: theme.palette.text.secondary,
-            },
-            "& .MuiInputBase-input": {
-              color: theme.palette.text.primary,
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: theme.palette.text.secondary,
-              },
-              "&:hover fieldset": {
-                borderColor: theme.palette.primary.main,
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: theme.palette.primary.main,
-              },
-            },
-          }}
+          css={textFieldStyles(errors.genre)}
+          error={errors.genre}
+          helperText={errors.genre && "Genre is required"}
         >
           {GENRES.map((genre) => (
             <MenuItem key={genre} value={genre}>
@@ -152,16 +139,18 @@ const SongForm: React.FC<SongFormProps> = ({
           ))}
         </TextField>
       </DialogContent>
-      <DialogActions sx={{ bgcolor: theme.palette.background.default }}>
+      <DialogActions
+        css={{ backgroundColor: theme.palette.background.default }}
+      >
         <Button
           onClick={handleClose}
-          sx={{ color: theme.palette.text.secondary }}
+          css={{ color: theme.palette.text.secondary }}
         >
           Cancel
         </Button>
         <Button
-          onClick={handleSubmit}
-          sx={{
+          onClick={onSubmit}
+          css={{
             color: theme.palette.primary.contrastText,
             backgroundColor: theme.palette.primary.main,
             "&:hover": {

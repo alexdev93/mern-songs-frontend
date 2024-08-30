@@ -1,7 +1,8 @@
-"use client";
-import React, { useState } from "react";
+/** @jsxImportSource @emotion/react */
+import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import { useInView } from "react-intersection-observer";
+import { css } from "@emotion/react";
 
 interface CounterProps {
   targetNumber: number;
@@ -12,7 +13,7 @@ const Counter: React.FC<CounterProps> = ({ targetNumber, largeText }) => {
   const [number, setNumber] = useState<number>(0);
   const { ref, inView } = useInView();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (inView) {
       let start = 0;
       const end = targetNumber;
@@ -30,7 +31,13 @@ const Counter: React.FC<CounterProps> = ({ targetNumber, largeText }) => {
   }, [inView, targetNumber]);
 
   return (
-    <Typography ref={ref} variant="body1" sx={largeText}>
+    <Typography
+      ref={ref}
+      variant="body1"
+      css={css`
+        ${largeText};
+      `}
+    >
       {number}+
     </Typography>
   );

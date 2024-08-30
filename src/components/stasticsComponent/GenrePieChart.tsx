@@ -1,9 +1,11 @@
+/** @jsxImportSource @emotion/react */
 import React, { useMemo } from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import { useTheme } from "@mui/material/styles";
 import { Typography } from "@mui/material";
-import { COLORS } from "../../constants"
+import { css } from "@emotion/react";
+import { COLORS } from "../../constants";
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
@@ -14,9 +16,6 @@ interface GenrePieChartProps {
 const GenrePieChart: React.FC<GenrePieChartProps> = ({ data }) => {
   const theme = useTheme();
 
-  
-
-  // Prepare chart data
   const chartData = useMemo(() => {
     if (!data || data.length === 0) {
       return {
@@ -45,9 +44,8 @@ const GenrePieChart: React.FC<GenrePieChartProps> = ({ data }) => {
         },
       ],
     };
-  }, [data, theme.palette.background.paper, COLORS]);
+  }, [data, theme.palette.background.paper]);
 
-  // Prepare chart options
   const options = useMemo(
     () => ({
       responsive: true,
@@ -64,34 +62,50 @@ const GenrePieChart: React.FC<GenrePieChartProps> = ({ data }) => {
       },
       elements: {
         arc: {
-          borderWidth: 2, // Adjust border width to make it look compact
+          borderWidth: 2,
         },
       },
-      cutout: "70%", // Creates a donut effect
+      cutout: "70%",
     }),
-    [theme.palette.background.paper]
+    []
   );
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center", // Center horizontally
-        justifyContent: "center", // Center vertically
-        textAlign: "center",
-        height: "100%", // Ensure it takes full height of the container
-      }}
+      css={css`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 100%;
+      `}
     >
-      <Typography variant="h6" color={theme.palette.text.primary} gutterBottom>
+      <Typography
+        variant="h6"
+        css={css`
+          color: ${theme.palette.text.primary};
+          margin-bottom: 16px;
+        `}
+      >
         Genre Distribution
       </Typography>
       {data && data.length > 0 ? (
-        <div style={{ width: "300px", height: "300px" }}>
+        <div
+          css={css`
+            width: 300px;
+            height: 300px;
+          `}
+        >
           <Pie data={chartData as any} options={options} />
         </div>
       ) : (
-        <Typography variant="body1" color={theme.palette.text.primary}>
+        <Typography
+          variant="body1"
+          css={css`
+            color: ${theme.palette.text.primary};
+          `}
+        >
           No data available
         </Typography>
       )}

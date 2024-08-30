@@ -20,14 +20,33 @@ import {
 } from "../../features/songs/songsSlice";
 import { RootState } from "../../store/store";
 import { Song } from "../../features/songs/types";
-import {
-  actionsContainerStyle,
-  StyledIconButton,
-  StyledTooltip,
-  dataGridStyle,
-} from "../styles"
 import GenreFilter from "./GenreFilter";
 import SongForm from "./SongForm";
+import { css } from "@emotion/react";
+
+// Define Emotion styles
+const actionsContainerStyle = css`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const StyledIconButton = css`
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+`;
+
+const StyledTooltip = css`
+  .MuiTooltip-tooltip {
+    font-size: 0.75rem;
+  }
+`;
+
+const dataGridStyle = css`
+  height: 400px;
+  width: 100%;
+  margin-top: 1rem;
+`;
 
 const SongList: React.FC = () => {
   const dispatch = useDispatch();
@@ -108,22 +127,19 @@ const SongList: React.FC = () => {
       flex: 1,
       renderCell: (params) => (
         <div css={actionsContainerStyle}>
-          <StyledTooltip title="Edit">
-            <StyledIconButton
-              color="primary"
-              onClick={() => handleEdit(params.row)}
-            >
+          <div css={StyledTooltip} title="Edit">
+            <div css={StyledIconButton} onClick={() => handleEdit(params.row)}>
               <Edit />
-            </StyledIconButton>
-          </StyledTooltip>
-          <StyledTooltip title="Delete">
-            <StyledIconButton
-              color="error"
+            </div>
+          </div>
+          <div css={StyledTooltip} title="Delete">
+            <div
+              css={StyledIconButton}
               onClick={() => handleDelete(params.row.id as string)}
             >
               <Delete />
-            </StyledIconButton>
-          </StyledTooltip>
+            </div>
+          </div>
         </div>
       ),
     },
@@ -136,7 +152,7 @@ const SongList: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh", 
+          height: "100vh",
         }}
       >
         <CircularProgress />
@@ -159,15 +175,11 @@ const SongList: React.FC = () => {
         Song List
       </Typography>
 
-      <StyledTooltip title="Add Song">
-        <StyledIconButton
-          color="primary"
-          onClick={handleAdd}
-          aria-hidden={false}
-        >
+      <div css={StyledTooltip} title="Add Song">
+        <div css={StyledIconButton} onClick={handleAdd}>
           <Add />
-        </StyledIconButton>
-      </StyledTooltip>
+        </div>
+      </div>
 
       <GenreFilter genreFilter={genreFilter} setGenreFilter={setGenreFilter} />
 

@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { useTheme } from "@mui/material/styles";
 import { Typography } from "@mui/material";
+import { css } from "@emotion/react";
 import { COLORS } from "../../constants";
 
 ChartJS.register(
@@ -24,7 +25,7 @@ ChartJS.register(
 );
 
 interface HorizontalBarChartProps {
-  data?: { _id: string; count: number }[]; 
+  data?: { _id: string; count: number }[];
 }
 
 const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
@@ -60,7 +61,7 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
         },
       ],
     };
-  }, [data, theme.palette.background.paper, COLORS]);
+  }, [data, theme.palette.background.paper]);
 
   // Prepare chart options
   const options = useMemo(
@@ -103,13 +104,13 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
   if (data.length === 0) {
     return (
       <div
-        style={{
-          width: "100%",
-          height: "300px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        css={css`
+          width: 100%;
+          height: 600px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `}
       >
         <span>No data available</span>
       </div>
@@ -118,23 +119,23 @@ const AlbumBarChart: React.FC<HorizontalBarChartProps> = ({ data = [] }) => {
 
   return (
     <div
-      style={{
-        width: "100%",
-        height: "300px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "16px",
-        boxSizing: "border-box",
-      }}
+      css={css`
+        width: 100%;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px;
+        box-sizing: border-box;
+      `}
     >
       <Typography
         variant="h6"
-        sx={{
-          marginBottom: "16px",
-          textAlign: "center",
-          color: theme.palette.text.primary,
-        }}
+        css={css`
+          margin-bottom: 16px;
+          text-align: center;
+          color: ${theme.palette.text.primary};
+        `}
       >
         Albums Count by Artist
       </Typography>

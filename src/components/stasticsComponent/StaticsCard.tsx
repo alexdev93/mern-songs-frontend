@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import React from "react";
 import { Card, CardContent, Typography, Grid, useTheme } from "@mui/material";
 import { css } from "@emotion/react";
@@ -22,7 +23,10 @@ const StatisticsCard: React.FC<StatisticsProps> = ({
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: "5px",
     transition: "all 0.4s ease-in-out",
-    boxShadow: "1px 2px 15px rgba(0, 0, 0, 0.1)",
+    boxShadow: "1px 2px 15px rgba(0, 0, 0, 0.8)",
+    background: "rgba(0, 0, 0, 0.2)", 
+    backdropFilter: "blur(10px)", 
+    color: theme.palette.text.primary,
     "&:hover": {
       cursor: "default",
       transform: "translateY(-5px)",

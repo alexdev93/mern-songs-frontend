@@ -1,5 +1,4 @@
-// src/components/ArtistBarChart.tsx
-
+/** @jsxImportSource @emotion/react */
 import React, { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -13,6 +12,7 @@ import {
 } from "chart.js";
 import { useTheme } from "@mui/material/styles";
 import { Typography } from "@mui/material";
+import { css } from "@emotion/react";
 import { COLORS } from "../../constants";
 
 ChartJS.register(
@@ -47,11 +47,8 @@ const ArtistBarChart: React.FC<ArtistBarChartProps> = ({ data }) => {
       };
     }
 
-    // Log data for debugging
-    console.log("Artist Data:", data);
-
     return {
-      labels: data.map((item) => item._id), // Use _id as the label
+      labels: data.map((item) => item._id),
       datasets: [
         {
           label: "Total Albums",
@@ -64,12 +61,12 @@ const ArtistBarChart: React.FC<ArtistBarChartProps> = ({ data }) => {
         },
       ],
     };
-  }, [data, theme.palette.background.paper, COLORS]);
+  }, [data, theme.palette.background.paper]);
 
-  // Prepare chart options
   const options = useMemo(
     () => ({
       responsive: true,
+      maintainAspectRatio: false, // Allow the chart to take up the full height
       plugins: {
         legend: {
           position: "top" as const,
@@ -106,24 +103,42 @@ const ArtistBarChart: React.FC<ArtistBarChartProps> = ({ data }) => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center", // Center horizontally
-        justifyContent: "center", // Center vertically
-        textAlign: "center",
-        height: "100%", // Ensure it takes full height of the container
-      }}
+      css={css`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        height: 100%; 
+      `}
     >
-      <Typography variant="h6" color={theme.palette.text.primary} gutterBottom>
+      <Typography
+        variant="h6"
+        css={css`
+          color: ${theme.palette.text.primary};
+          margin-bottom: 16px;
+        `}
+      >
         Total Albums by Artist
       </Typography>
       {data && data.length > 0 ? (
-        <div style={{ width: "100%", height: "300px" }}>
+        <div
+          css={css`
+            width: 100%;
+            height: 500px; 
+            min-height: 500px; 
+          `}
+        >
           <Bar data={chartData as any} options={options} />
         </div>
       ) : (
-        <Typography variant="body1" color={theme.palette.text.primary}>
+        <Typography
+          variant="body1"
+          css={css`
+            color: ${theme.palette.text.primary};
+          `}
+        >
           No data available
         </Typography>
       )}
