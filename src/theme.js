@@ -4,18 +4,18 @@ const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#1976d2", // Customize your primary color
+      main: "#1976d2",
     },
     secondary: {
-      main: "#1E232E", // Customize your secondary color
+      main: "#1E232E",
     },
     text: {
-      primary: "#fff", // Primary text color
-      secondary: "#b0b0b0", // Secondary text color
+      primary: "#fff",
+      secondary: "#b0b0b0",
     },
     background: {
-      default: "#0f0f0f", // Background color for dark mode
-      paper: "#383838", // Paper color for dark mode
+      default: "#0f0f0f",
+      paper: "#383838", 
     },
   },
   typography: {
